@@ -1,12 +1,12 @@
 # ============================================================================
-# Makefile for ASM Graphics Library
+# Makefile for Maze ASM
 # ============================================================================
-# Native macOS implementation
+# Native macOS ARM64 assembly maze game
 #
 # Targets:
-#   make          - Build the demo
+#   make          - Build the game
 #   make clean    - Remove build artifacts
-#   make run      - Build and run the demo
+#   make run      - Build and run the game
 # ============================================================================
 
 # Assembler/Linker
@@ -38,19 +38,19 @@ PLATFORM_SRCS = $(PLATFORM_DIR)/print.s \
                 $(PLATFORM_DIR)/window.s \
                 $(PLATFORM_DIR)/timing.s
 
-SHARED_SRCS = $(SHARED_DIR)/raster.s $(SHARED_DIR)/maze.s
+SHARED_SRCS = $(SHARED_DIR)/raster.s $(SHARED_DIR)/maze_gen.s
 
-DEMO_SRC = src/demo.s
+MAIN_SRC = src/maze.s
 
 # Object files
 PLATFORM_OBJS = $(patsubst $(PLATFORM_DIR)/%.s,$(BUILD_DIR)/%.o,$(PLATFORM_SRCS))
 SHARED_OBJS = $(patsubst $(SHARED_DIR)/%.s,$(BUILD_DIR)/%.o,$(SHARED_SRCS))
-DEMO_OBJ = $(BUILD_DIR)/demo.o
+MAIN_OBJ = $(BUILD_DIR)/main.o
 
-ALL_OBJS = $(PLATFORM_OBJS) $(SHARED_OBJS) $(DEMO_OBJ)
+ALL_OBJS = $(PLATFORM_OBJS) $(SHARED_OBJS) $(MAIN_OBJ)
 
 # Output
-TARGET = $(BUILD_DIR)/demo
+TARGET = $(BUILD_DIR)/maze
 
 # ============================================================================
 # Targets
@@ -75,8 +75,8 @@ $(BUILD_DIR)/%.o: $(SHARED_DIR)/%.s | $(BUILD_DIR)
 	@echo "Assembling $<..."
 	$(AS) $(ASFLAGS) -I$(INC_DIR) -o $@ $<
 
-# Demo
-$(BUILD_DIR)/demo.o: src/demo.s | $(BUILD_DIR)
+# Main game
+$(BUILD_DIR)/main.o: src/maze.s | $(BUILD_DIR)
 	@echo "Assembling $<..."
 	$(AS) $(ASFLAGS) -I$(INC_DIR) -o $@ $<
 
@@ -88,7 +88,7 @@ clean:
 	@echo "Cleaned build directory."
 
 run: all
-	@echo "Running demo..."
+	@echo "Running maze..."
 	@$(TARGET)
 
 # ============================================================================
@@ -96,16 +96,17 @@ run: all
 # ============================================================================
 
 help:
-	@echo "ASM Graphics Library Makefile"
+	@echo "Maze ASM Makefile"
 	@echo ""
-	@echo "Native macOS implementation"
+	@echo "Native macOS ARM64 assembly maze game"
 	@echo ""
 	@echo "Targets:"
-	@echo "  make              - Build the demo"
-	@echo "  make run          - Build and run the demo"
+	@echo "  make              - Build the game"
+	@echo "  make run          - Build and run the game"
 	@echo "  make clean        - Remove build artifacts"
 	@echo "  make help         - Show this help"
 	@echo ""
 	@echo "Controls:"
-	@echo "  Arrow keys / WASD - Move the square"
+	@echo "  Arrow keys / WASD - Move through the maze"
+	@echo "  R                 - Generate new maze"
 	@echo "  ESC / Q           - Quit"

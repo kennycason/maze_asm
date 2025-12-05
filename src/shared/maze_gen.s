@@ -1,5 +1,5 @@
 // ============================================================================
-// maze.s - Maze generation using recursive backtracking
+// maze_gen.s - Maze generation using recursive backtracking
 // ============================================================================
 // Generates a perfect maze (one path between any two points).
 // Algorithm: Recursive backtracking with randomized direction order.

@@ -2,6 +2,9 @@
 
 ![Screenshot](screenshot.png)
 
+[▶️ Watch Demo](maze_asm.mp4)
+[▶️ Watch Color Demo](maze_asm_colors.mp4)
+
 A maze game written entirely in ARM64 assembly for macOS. Navigate through randomly generated mazes using classic recursive backtracking.
 
 ## About
@@ -49,13 +52,6 @@ This project demonstrates building a complete graphical application in pure asse
 ### Build & Run
 
 ```bash
-make
-./build/demo
-```
-
-Or simply:
-
-```bash
 make run
 ```
 
@@ -66,9 +62,9 @@ maze_asm/
 ├── include/
 │   └── constants.inc          # Shared constants and key mappings
 ├── src/
-│   ├── demo.s                 # Main game loop and rendering
+│   ├── maze.s                 # Main game loop and rendering
 │   ├── shared/
-│   │   ├── maze.s             # Maze generation (recursive backtracking)
+│   │   ├── maze_gen.s         # Maze generation (recursive backtracking)
 │   │   └── raster.s           # Software rasterizer (platform-independent)
 │   └── platform/
 │       └── macos/
@@ -76,7 +72,7 @@ maze_asm/
 │           ├── keyboard.s     # CoreGraphics keyboard input
 │           ├── timing.s       # Frame timing (usleep)
 │           └── print.s        # Console output (syscalls)
-├── build/                     # Compiled output
+├── build/                     # Compiled output (build/maze)
 ├── Makefile
 └── README.md
 ```

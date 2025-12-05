@@ -168,26 +168,26 @@ _raster_clear:
     ldr     x19, [x19]
     cbz     x19, clear_done
     
-    // Build pixel value (0xAARRGGBB format)
+    // Build pixel value (0xAABBGGRR for RGBA byte order in little-endian)
     adrp    x0, _current_a@PAGE
     add     x0, x0, _current_a@PAGEOFF
     ldrb    w0, [x0]
     lsl     w20, w0, #24             // A << 24
     
-    adrp    x0, _current_r@PAGE
-    add     x0, x0, _current_r@PAGEOFF
+    adrp    x0, _current_b@PAGE
+    add     x0, x0, _current_b@PAGEOFF
     ldrb    w0, [x0]
-    orr     w20, w20, w0, lsl #16    // | R << 16
+    orr     w20, w20, w0, lsl #16    // | B << 16
     
     adrp    x0, _current_g@PAGE
     add     x0, x0, _current_g@PAGEOFF
     ldrb    w0, [x0]
     orr     w20, w20, w0, lsl #8     // | G << 8
     
-    adrp    x0, _current_b@PAGE
-    add     x0, x0, _current_b@PAGEOFF
+    adrp    x0, _current_r@PAGE
+    add     x0, x0, _current_r@PAGEOFF
     ldrb    w0, [x0]
-    orr     w20, w20, w0             // | B
+    orr     w20, w20, w0             // | R
     
     // Get total pixels
     adrp    x0, _fb_width@PAGE
@@ -246,14 +246,14 @@ _raster_plot:
     add     x4, x4, _framebuffer@PAGEOFF
     ldr     x4, [x4]
     
-    // Build pixel (0xAARRGGBB format)
+    // Build pixel (0xAABBGGRR for RGBA byte order in little-endian)
     adrp    x5, _current_a@PAGE
     add     x5, x5, _current_a@PAGEOFF
     ldrb    w5, [x5]
     lsl     w6, w5, #24
     
-    adrp    x5, _current_r@PAGE
-    add     x5, x5, _current_r@PAGEOFF
+    adrp    x5, _current_b@PAGE
+    add     x5, x5, _current_b@PAGEOFF
     ldrb    w5, [x5]
     orr     w6, w6, w5, lsl #16
     
@@ -262,8 +262,8 @@ _raster_plot:
     ldrb    w5, [x5]
     orr     w6, w6, w5, lsl #8
     
-    adrp    x5, _current_b@PAGE
-    add     x5, x5, _current_b@PAGEOFF
+    adrp    x5, _current_r@PAGE
+    add     x5, x5, _current_r@PAGEOFF
     ldrb    w5, [x5]
     orr     w6, w6, w5
     
